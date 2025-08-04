@@ -1,0 +1,33 @@
+# SDL2 C++ 프로젝트 Makefile
+
+# 컴파일러 설정
+CXX = g++
+CXXFLAGS = -Wall -std=c++11
+
+# SDL2 설정
+SDL2_CFLAGS = $(shell sdl2-config --cflags)
+SDL2_LIBS = $(shell sdl2-config --libs)
+
+# 파일 설정
+TARGET = sdl_example
+SOURCES = main.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+
+# 메인 타겟
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CXX) $(OBJECTS) $(SDL2_LIBS) -o $(TARGET)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(SDL2_CFLAGS) -c $< -o $@
+
+# 정리
+clean:
+	rm -f $(OBJECTS) $(TARGET)
+
+# 실행
+run: $(TARGET)
+	./$(TARGET)
+
+.PHONY: all clean run
